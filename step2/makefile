@@ -10,5 +10,9 @@ LDFLAGS=-lmpi -lmpi_cxx
 a.out: test.cpp
 	$(CC) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
+test: a.out
+	mpirun -np 4 ./a.out
+	gnuplot dump.plt
+
 clean:
-	rm -f a.out dump*.dat
+	rm -f a.out dump*.dat dump.png
