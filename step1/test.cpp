@@ -1,6 +1,5 @@
 //------------------------------------------------------------------------
 #include <stdio.h>
-#include <iostream>
 #include <particle_simulator.hpp>
 int
 main(int argc, char **argv) {
