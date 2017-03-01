@@ -1,7 +1,6 @@
 //------------------------------------------------------------------------
 #include <stdio.h>
 #include <math.h>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <fstream>
@@ -61,7 +60,6 @@ dump(const int rank, System &sys) {
 int
 main(int argc, char **argv) {
   PS::Initialize(argc, argv);
-  std::cout << std::flush;
   const int rank = PS::Comm::getRank();
   const int procs = PS::Comm::getNumberOfProc();
   PS::ParticleSystem<FPLJ> lj_system;
@@ -81,7 +79,7 @@ main(int argc, char **argv) {
   lj_system.exchangeParticle(dinfo);
   dump< PS::ParticleSystem<FPLJ> >(rank, lj_system);
   PS::Comm::barrier();
-  printf("%d/%d %d\n", rank, procs, lj_system.getNumberOfParticleLocal());
+  printf("(%d/%d) n= %d\n", rank, procs, lj_system.getNumberOfParticleLocal());
   PS::Finalize();
 }
 //------------------------------------------------------------------------
