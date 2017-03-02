@@ -85,13 +85,6 @@ public:
   }
 };
 //------------------------------------------------------------------------
-PS::F64
-reducesum(PS::F64 v){
-  PS::F64 r;
-  MPI::COMM_WORLD.Allreduce(&v, &r, 1, PS::GetDataType<PS::F64>(), MPI::SUM);
-  return r;
-}
-//------------------------------------------------------------------------
 template<class Tpsys>
 PS::F64
 energy(const Tpsys &system){
@@ -102,7 +95,7 @@ energy(const Tpsys &system){
     e += (a.p*a.p)*0.5;
     e += a.potential;
   }
-  return reducesum(e);
+  return PS::Comm::getSum(e);
 }
 //------------------------------------------------------------------------
 template<class Tpsys>
