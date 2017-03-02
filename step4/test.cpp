@@ -139,11 +139,21 @@ main(int argc, char **argv) {
   const PS::F64 dt = 0.01;
   PS::F64 s_time = 0.0;
   const int LOOP = 1000;
+  dinfo.decomposeDomainAll(lj_system);	
   for(int i=0;i<LOOP;i++){
+
+		/* 1st order
+    drift(lj_system, dt);
+    tree_lj.calcForceAllAndWriteBack(CalcForceLJ(), lj_system, dinfo);
+    kick(lj_system, dt);
+		*/
+
+		// 2nd order
     drift(lj_system, dt*0.5);
     tree_lj.calcForceAllAndWriteBack(CalcForceLJ(), lj_system, dinfo);
     kick(lj_system, dt);
     drift(lj_system, dt*0.5);
+
     std::cout << s_time << " ";
     std::cout << lj_system[0].q.x << " ";
     std::cout << lj_system[1].q.x << " ";
