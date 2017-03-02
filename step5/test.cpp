@@ -85,6 +85,13 @@ public:
   }
 };
 //------------------------------------------------------------------------
+PS::F64
+reducesum(PS::F64 v){
+  PS::F64 r;
+  MPI::COMM_WORLD.Allreduce(&v, &r, 1, PS::GetDataType<PS::F64>(), MPI::SUM);
+  return r;
+}
+//------------------------------------------------------------------------
 template<class Tpsys>
 PS::F64
 energy(const Tpsys &system){
@@ -95,7 +102,7 @@ energy(const Tpsys &system){
     e += (a.p*a.p)*0.5;
     e += a.potential;
   }
-  return e;
+  return reducesum(e);
 }
 //------------------------------------------------------------------------
 template<class Tpsys>
@@ -169,6 +176,11 @@ main(int argc, char **argv) {
     kick(lj_system, dt);
     drift(lj_system, dt*0.5);
     dump(ofs, s_time, lj_system);
+    tree_lj.calcForceAllAndWriteBack(CalcForceLJ(), lj_system, dinfo);
+    PS::F64 e = energy(lj_system);
+    if (rank==0){
+      std::cout << s_time << " " << e << std::endl;
+    }
     s_time += dt;
   }
   PS::Finalize();
