@@ -10,4 +10,4 @@ a.out: test.cpp
 	$(CC) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 clean:
-	rm -f a.out
+	rm -f a.out *.cdv
